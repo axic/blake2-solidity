@@ -18,7 +18,9 @@
  *
  */
 
-// const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const mnemonic = "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat";
+
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
@@ -34,6 +36,14 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
+
+  networks: {
+    development: {
+      provider: function() {
+        return new HDWalletProvider(mnemonic, "http://localhost:8543/");
+      },
+      network_id: "*",
+    }
 
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
