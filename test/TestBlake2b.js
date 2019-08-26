@@ -3,7 +3,7 @@ const Blake2bTest = artifacts.require('Blake2bTest.sol');
 contract('Blake2bTest', function (accounts) {
     let contract;
 
-    beforeEach(async () => {
+    before(async () => {
         contract = await Blake2bTest.new();
     });
 
