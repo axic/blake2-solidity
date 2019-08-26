@@ -1,4 +1,5 @@
 const Blake2bTest = artifacts.require('Blake2bTest.sol');
+const TestVectors = require('./blake2ref/testvectors/blake2-kat.json');
 
 contract('Blake2bTest', function (accounts) {
     let contract;
@@ -28,5 +29,25 @@ contract('Blake2bTest', function (accounts) {
         let input = Buffer.from('000102030405060708090a0b0c0d0e0f10111213141516171800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000', 'hex');
         let ret = await contract.testOneBlock.call(input, 25);
         assert.equal(ret, '0x54e6dab9977380a5665822db93374eda528d9beb626f9b94027071cb26675e112b4a7fec941ee60a81e4d2ea3ff7bc52cfc45dfbfe735a1c646b2cf6d6a49b62', 'hash mismatch');
+    });
+
+    it('blake2b reference test vectors', async () => {
+        for (var i in TestVectors) {
+            const testCase = TestVectors[i];
+            if (testCase.hash !== 'blake2b' || testCase.key.length !== 0 || testCase.in.length > 128) {
+                continue;
+            }
+
+            let input = Buffer.from(testCase.in, 'hex');
+            let input_length = input.length;
+            // Pad with zeroes.
+            // FIXME: this should not be needed once the library is finished.
+            if (input_length < 128) {
+                input = Buffer.concat([input,  Buffer.alloc(128 - input_length)]);
+            }
+
+            let ret = await contract.testOneBlock.call(input, input_length);
+            assert.equal(ret, '0x' + testCase.out, 'hash mismatch');
+        }
     });
 });
