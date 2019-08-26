@@ -160,9 +160,15 @@ library Blake2b {
         returns (bytes memory output)
     {
         update_loop(instance, data, data_len, true);
-        // FIXME: return ouput from state
-        // It is the `out_len` bytes of `state.h` – but that is formatted as 64-bit little endian words,
-        // while we want continuous output here.
-        return instance.state;
+
+        // FIXME: support other lengths
+        assert(instance.out_len == 64);
+
+        bytes memory state = instance.state;
+        output = new bytes(instance.out_len);
+        assembly {
+            mstore(add(output, 32), mload(add(state, 36)))
+            mstore(add(output, 64), mload(add(state, 68)))
+        }
     }
 }
