@@ -109,21 +109,16 @@ library Blake2b {
         while (len > 0) {
             if (len >= 128) {
                 assembly {
-                    // FIXME: consider the little endian encoding required by the precompile here..
                     mstore(state_ptr, mload(data_ptr))
-                    state_ptr := add(state_ptr, 32)
                     data_ptr := add(data_ptr, 32)
 
-                    mstore(state_ptr, mload(data_ptr))
-                    state_ptr := add(state_ptr, 32)
+                    mstore(add(state_ptr, 32), mload(data_ptr))
                     data_ptr := add(data_ptr, 32)
 
-                    mstore(state_ptr, mload(data_ptr))
-                    state_ptr := add(state_ptr, 32)
+                    mstore(add(state_ptr, 64), mload(data_ptr))
                     data_ptr := add(data_ptr, 32)
 
-                    mstore(state_ptr, mload(data_ptr))
-                    state_ptr := add(state_ptr, 32)
+                    mstore(add(state_ptr, 96), mload(data_ptr))
                     data_ptr := add(data_ptr, 32)
                 }
 
