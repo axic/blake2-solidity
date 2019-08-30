@@ -139,9 +139,12 @@ library Blake2b {
             }
 
             // Set the last block indicator.
-            assembly {
-                // Writing byte 212 here.
-                mstore8(add(state, 244), last_block)
+            // Only if we've processed all input.
+            if (len == 0) {
+                assembly {
+                    // Writing byte 212 here.
+                    mstore8(add(state, 244), last_block)
+                }
             }
 
             // Call the precompile
