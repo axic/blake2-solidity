@@ -28,11 +28,13 @@ library Blake2b {
     }
 
     // Initialise the state with a given `key` and required `out_len` hash length.
+    // TODO: reorganize this to support taking Instance as an input, to reuse the memory
     function init(bytes memory key, uint out_len)
         internal
         returns (Instance memory instance)
     {
         instance.out_len = out_len;
+        instance.input_counter = 0;
 
         // This is entire state transmitted to the precompile.
         // It is byteswapped for the encoding requirements, additionally
@@ -54,6 +56,9 @@ library Blake2b {
         // TODO: support salt and personalization
 
         if (key_len > 0) {
+            require(key_len == 64);
+            // FIXME: the key must be zero padded
+            assert(key.length == 128);
             update(instance, key, key_len);
         }
     }
@@ -148,9 +153,11 @@ library Blake2b {
     }
 
     // Update the state with a non-final block.
+    // NOTE: the input must be complete blocks.
     function update(Instance memory instance, bytes memory data, uint data_len)
         internal
     {
+        require((data.length % 128) == 0);
         update_loop(instance, data, data_len, false);
     }
 
@@ -159,6 +166,8 @@ library Blake2b {
         internal
         returns (bytes memory output)
     {
+        // FIXME: support incomplete blocks (zero pad them)
+        assert((data.length % 128) == 0);
         update_loop(instance, data, data_len, true);
 
         // FIXME: support other lengths
