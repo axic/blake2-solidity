@@ -11,7 +11,7 @@ It requires a recent go-ethereum develop version, since it uses the precompile.
 Use the `geth-genesis.json`, run a local node and use `truffle test`.
 
 1. Download and build `go-ethereum` commit `cc9eb91d30a5d4806154b832b9665aecc617b6d8`
-2. To prepare, run `geth --datadir ./datadir init ./geth-genesis.json`
+2. To prepare, run `geth --datadir ./dataDir init ./geth-genesis.json`
 3. To start the node `geth --port 4321 --networkid 1234 --datadir=./dataDir  --rpc --rpcport 8543 --rpcaddr 127.0.0.1  --rpcapi "eth,net,web3,personal,miner" --gasprice 0 --etherbase 0x627306090abab3a6e1400e9345bc60c78a8bef57 --mine`
 4. Install prerequisite to truffle: `npm install --save truffle-hdwallet-provider`
 4. And finally run `truffle test` to see tests succeed (or fail)
