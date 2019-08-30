@@ -35,6 +35,12 @@ library Blake2b {
         view
         returns (Instance memory instance)
     {
+        // Safety check that the precompile exists.
+        // TODO: remove this?
+        // assembly {
+        //    if eq(extcodehash(0x09), 0) { revert(0, 0) }
+        //}
+
         instance.out_len = out_len;
         instance.input_counter = 0;
 
