@@ -31,6 +31,7 @@ library Blake2b {
     // TODO: reorganize this to support taking Instance as an input, to reuse the memory
     function init(bytes memory key, uint out_len)
         internal
+        view
         returns (Instance memory instance)
     {
         instance.out_len = out_len;
@@ -68,6 +69,7 @@ library Blake2b {
     // but the supplied block data will not be cleared.
     function call_function_f(Instance memory instance)
         private
+        view
     {
         bytes memory state = instance.state;
         assembly {
@@ -83,6 +85,7 @@ library Blake2b {
     //       hence the real length is indicated with `data_len`
     function update_loop(Instance memory instance, bytes memory data, uint data_len, bool last_block)
         private
+        view
     {
         bytes memory state = instance.state;
         uint input_counter = instance.input_counter;
@@ -156,6 +159,7 @@ library Blake2b {
     // NOTE: the input must be complete blocks.
     function update(Instance memory instance, bytes memory data, uint data_len)
         internal
+        view
     {
         require((data.length % 128) == 0);
         update_loop(instance, data, data_len, false);
@@ -164,6 +168,7 @@ library Blake2b {
     // Update the state with a final block and return the hash.
     function finalize(Instance memory instance, bytes memory data, uint data_len)
         internal
+        view
         returns (bytes memory output)
     {
         // FIXME: support incomplete blocks (zero pad them)
