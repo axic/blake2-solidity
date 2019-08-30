@@ -21,8 +21,8 @@ contract Blake2bTest {
         assembly {
             scratch_ptr := add(scratch, 32)
         }
+        Blake2b.Instance memory instance = Blake2b.init(hex"", 64);
         for (uint i = 0; i < 512; i++) {
-            Blake2b.Instance memory instance = Blake2b.init(hex"", 64);
             assembly {
                 // This would be a 32-bit little endian number in Equihash
                 mstore(scratch_ptr, i)
@@ -32,6 +32,7 @@ contract Blake2bTest {
                 ret := xor(ret, mload(add(hash, 32)))
                 ret := xor(ret, mload(add(hash, 64)))
             }
+            instance.reset(hex"", 64);
         }
     }
 }

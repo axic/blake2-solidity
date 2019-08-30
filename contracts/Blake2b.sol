@@ -29,7 +29,6 @@ library Blake2b {
     }
 
     // Initialise the state with a given `key` and required `out_len` hash length.
-    // TODO: reorganize this to support taking Instance as an input, to reuse the memory
     function init(bytes memory key, uint out_len)
         internal
         view
@@ -41,6 +40,14 @@ library Blake2b {
         //    if eq(extcodehash(0x09), 0) { revert(0, 0) }
         //}
 
+        reset(instance, key, out_len);
+    }
+
+    // Initialise the state with a given `key` and required `out_len` hash length.
+    function reset(Instance memory instance, bytes memory key, uint out_len)
+        internal
+        view
+    {
         instance.out_len = out_len;
         instance.input_counter = 0;
 
