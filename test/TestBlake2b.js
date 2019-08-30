@@ -37,6 +37,12 @@ contract('Blake2bTest', function (accounts) {
         assert.equal(ret, '0x5b21c5fd8868367612474fa2e70e9cfa2201ffeee8fafab5797ad58fefa17c9b5b107da4a3db6320baaf2c8617d5a51df914ae88da3867c2d41f0cc14fa67928', 'hash mismatch');
     });
 
+    it('equihash n=200 k=9 synthethic', async () => {
+        let ret = await contract.equihashTestN200K9.call();
+        assert.equal(ret.toString(), '14394687529728284581040569373478606499820061758322408099941575726000591405977', 'output mismatch');
+        console.log('Gas usage', await contract.equihashTestN200K9.estimateGas());
+    });
+
     it('blake2b reference test vectors', async () => {
         for (var i in TestVectors) {
             const testCase = TestVectors[i];
