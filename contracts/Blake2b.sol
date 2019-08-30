@@ -123,13 +123,17 @@ library Blake2b {
                 }
 
                 len -= 128;
-                input_counter += 128;
+                // FIXME: remove this once implemented proper padding
+                if (data_len < 128) {
+                    input_counter += data_len;
+                } else {
+                    data_len -= 128;
+                    input_counter += 128;
+                }
             } else {
                 // FIXME: implement support for smaller than 128 byte blocks
                 revert();
             }
-
-            input_counter = data_len;
 
             // Set length field (little-endian) for maximum of 24-bits.
             assembly {
