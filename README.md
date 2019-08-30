@@ -16,6 +16,13 @@ Use the `geth-genesis.json`, run a local node and use `truffle test`.
 4. Install prerequisite to truffle: `npm install --save truffle-hdwallet-provider`
 4. And finally run `truffle test` to see tests succeed (or fail)
 
+## References
+
+- Official specification: https://blake2.net/blake2.pdf
+- RFC7693 (contains a shorter, but less comprehensive description): https://tools.ietf.org/html/rfc7693
+- Test vectors: https://github.com/BLAKE2/BLAKE2/tree/master/testvectors
+- EIP-152 (Ethereum specific application): https://eips.ethereum.org/EIPS/eip-152
+
 ## Maintainer(s)
 
 - Alex Beregszaszi [@axic]
